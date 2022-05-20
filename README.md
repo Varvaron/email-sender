@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+Создайте форму отправки сообщения с полями:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+тема письма
+имя отправителя
+email отправителя
+имя получателя,
+email получателя
+сообщение
+Сделайте возможность прикреплять файлы к письму — не больше 5 МБ в одном файле, и не больше 20 МБ на одно письмо.
 
-## Available Scripts
+Технический стек
+React и Redux
+JS ES6
+Стили по БЭМ
+используете библиотеку-коннектор для API https://github.com/sendsay-ru/sendsay-api-js
+Фичи
+Валидация полей
+Прикрепление файлов через drag and drop
+Отображение списка отправленных сообщений со статусом
+Чтобы сделать задание вам понадобится:
 
-In the project directory, you can run:
+Запрос, для отправки письма:
 
-### `npm start`
+{
+  "action" : "issue.send.test",
+  "letter" : {
+    "subject" : "Тема письма",
+    "from.name" : "Имя отправителя", 
+    "from.email" : "Адрес отправителя (email)",
+    "to.name" : "Имя получателя",
+    "message": { "text" : "текстовая версия письма" },
+    "attaches": [
+      {
+	"name" : "имя файла",
+        "content": "содержимое файла закодированное base64",
+        "encoding" : "base64"
+      }
+    ]
+  },
+  "sendwhen": "test",
+  "mca": [
+    "Адрес получателя (email)",
+  ]
+}
+Запрос вернет номер трека:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+{
+  "track.id": "8888"
+}
+После, вы сможете отслеживать доставку:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+{ 
+  "action": "track.get",
+  "id": "8888", 
+  "session": "session" 
+}
+Возвращает:
 
-### `npm test`
+{
+  "obj": { 
+    "status": "статус (варианты перечислены ниже)" 
+  }
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Значение obj.status показывает в каком состоянии находится отправка:
+— равное «-1» — успех,
+— меньше «-1» — ошибка,
+— больше «-1» — в процессе.
+P.S.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Для выполнения задания вам понадобится бесплатный аккаунт в Sendsay.
